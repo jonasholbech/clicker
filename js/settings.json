@@ -1,0 +1,8 @@
+{
+  "version":"0.0.2",
+  "unlockDiff":3,
+  "scenes":[
+    {"name":"Farm","gfx":"gfx/worlds/w1.jpg"},
+    {"name":"Continent","gfx":"gfx/worlds/w2.png"}
+  ]
+}
