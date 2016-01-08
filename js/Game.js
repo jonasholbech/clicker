@@ -54,7 +54,9 @@ Game.move = function(){
         if(!c.beingDragged){
             var rX = Utils.getRandomInt(c.x-10, c.x+10)
             var rY = Utils.getRandomInt(c.y-10, c.y+10)
-            createjs.Tween.get(Game.creatures[Game.currentScene][i]).to({x:rX, y:rY}, 500);
+            if(rX > Game.settings.safeZone && rX < Game.stage.canvas.width -Game.settings.safeZone && rY > Game.settings.safeZone && rY < Game.stage.canvas.width -Game.settings.safeZone){
+                createjs.Tween.get(Game.creatures[Game.currentScene][i]).to({x:rX, y:rY}, 500);
+            }
         }
     }
 }
@@ -63,7 +65,7 @@ Game.spawn = function (num) {//only scene 0
     for(var i=0; i<num; i++){
         if (Game.crates.length + Game.creatures[0].length < 16) {
             var t = new createjs.Bitmap("gfx/crate.png");
-            var coords = Utils.getRandomCoordinates(91, 99);
+            var coords = Utils.getRandomCoordinates(Game.settings.safeZone, Game.settings.safeZone);
             t.x = coords.x;
             t.y = coords.y;
             t.regX= t.regY=30;
@@ -121,8 +123,8 @@ Game.addCreature = function (setup) {//applied on drop
     var setup=setup || {}
     setup.world = setup.world || Game.currentScene+1;
     setup.level = setup.level || 1;
-    setup.x = setup.x || Utils.getRandomCoordinates(40, 40).x;
-    setup.y = setup.y || Utils.getRandomCoordinates(40, 40).y;
+    setup.x = setup.x || Utils.getRandomCoordinates(Game.settings.safeZone, Game.settings.safeZone).x;
+    setup.y = setup.y || Utils.getRandomCoordinates(Game.settings.safeZone, Game.settings.safeZone).y;
     //console.log(setup)
     var t = new createjs.Sprite(Sprites.creatures, setup.world+"_"+ setup.level);
     t.creatureType = setup.level;
@@ -153,7 +155,7 @@ Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsv
             //the creatures don't match, or it's the same
             continue;
         }
-        if (Utils.distance(creature, Game.creatures[Game.currentScene][i]) < 40) {
+        if (Utils.distance(creature, Game.creatures[Game.currentScene][i]) < Game.settings.mergeDistance) {
             var newType = creature.creatureType + 1;
             creature.creatureType++;
             if(Sprites.creatures._animations.indexOf((Game.currentScene+1)+"_" + newType)>-1){
