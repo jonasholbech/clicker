@@ -46,7 +46,7 @@ var Database = {
     unescape:function(item){
         return JSON.parse(item);
     },
-    initialSetup:function(Game){
+    initialSetup:function(Game, Shop){
         this.set('version', Game.settings.version)
         this.set('crates', this.escape(Game.crates))
         this.set('creatureList', this.escape(Game.creatures))//empty initially, so this is safe
@@ -54,12 +54,13 @@ var Database = {
         this.set('coins', this.escape(Game.coins))
         this.set('unlocks', this.escape(Game.unlocks))
         this.set('firstPlayed', Date.now());
+        this.set('prices', this.escape(Shop.prices));
     },
     clean:function(){
         this.delete('version');
     },
 
-    update:function(Game){
+    update:function(Game, Shop){
         var i, z, a=[];
         for(i=0; i<Game.crates.length; i++){
             a.push({x:Game.crates[i].x, y:Game.crates[i].y});
@@ -79,12 +80,13 @@ var Database = {
         this.set('cps', this.escape(Game.cps))
         this.set('coins', this.escape(Game.coins))
         this.set('unlocks', this.escape(Game.unlocks))
+        this.set('prices', this.escape(Shop.prices));
     },
-    load:function(GO){//returns stuff loaded
+    load:function(Game, Shop){//returns stuff loaded
         var v = this.get('version');
         if(!v){
             console.log("first run")
-            this.initialSetup(Game);
+            this.initialSetup(Game, Shop);
             return false;
         } else {
             if(Game.settings.version!=v){
@@ -95,6 +97,7 @@ var Database = {
                 Game.cps        = this.unescape(this.get('cps'));
                 Game.coins      = this.unescape(this.get('coins'));
                 Game.unlocks    = this.unescape(this.get('unlocks'));
+                Shop.prices     = this.unescape(this.get('prices'))
                 return true;
             }
         }

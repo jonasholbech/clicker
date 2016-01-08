@@ -7,7 +7,7 @@ Game.crates = [];
 Game.creatures = [[], [], [], [], [], [], []];
 Game.cps=[0, 0, 0, 0, 0, 0, 0];
 Game.coins=[0, 0, 0, 0, 0, 0, 0];
-Game.unlocks = [1, 1, 1, 1, 1, 1, 1];
+Game.unlocks = [0, 0, 0, 0, 0, 0, 0];
 
 Game.cleanUp = function () {
     Game.stage.removeAllChildren();
@@ -24,7 +24,7 @@ Game.setupGame = function () {
     Texts.add(Scenes.list[Game.currentScene])
 
     Database.init();
-    if(Database.load(Game)){
+    if(Database.load(Game, Shop)){
         //Reinstatiate objects
         var i, z, l;
         //just spawn new creates: (even though x, y are available)
@@ -145,7 +145,7 @@ Game.addCreature = function (setup) {//applied on drop
         evt.target.beingDragged=false;
         Game.creatureDropped(evt.target);
     })
-    Database.update(Game)
+    Database.update(Game, Shop)
 }
 Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsvinder den ene ikke ved "new world"
 
@@ -160,6 +160,7 @@ Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsv
             creature.creatureType++;
             if(Sprites.creatures._animations.indexOf((Game.currentScene+1)+"_" + newType)>-1){
                 //this scene
+                //TODO virker ikke helt, ender med at kunne købe ting i verden før først creature i næste verden
                 if(Game.unlocks[Game.currentScene]+parseInt(Game.settings.unlockDiff) < newType){
                     Game.unlocks[Game.currentScene]=newType;
                 }
