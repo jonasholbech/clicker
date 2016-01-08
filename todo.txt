@@ -1,0 +1,5 @@
+Hvordan skal økonomien egentligt virke?
+lige nu, når et creature flyttes til en anden verden (er der en bug) og income falder drastisk i verden 1
+separat økonoimi i hver? (gør det ekstremt svært at nå sidste verden, og gør første verdener overflødige)
+
+Tror der skal sastes på samlet økonomi
