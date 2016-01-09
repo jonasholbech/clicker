@@ -11,7 +11,24 @@ var Shop = {
         [17179869184000,17179869184000*2, 17179869184000*4, 17179869184000*8],
         [17179869184000*16, 17179869184000*32, 17179869184000*64, 17179869184000*128, 17179869184000*256]
     ],
-
+    state:'closed',
+    button:null,
+    init:function(parent){
+        this.button = new createjs.Bitmap(Preload.queue.getResult('gfx/shop.png'));//skal være sprite en dag
+        this.button.x=parent.canvas.width-64;
+        this.button.y=parent.canvas.height-64;
+        parent.addChild(this.button)
+        this.button.on('click', Shop.toggleShop);
+    },
+    toggleShop:function(){
+        if(Shop.state=='open'){
+            Shop.state='closed';
+            Shop.close();
+        } else {
+            Shop.state='open';
+            Shop.open();
+        }
+    },
     open:function(){//shop er world specific, should it be global? (I guess yes)
         var i;
         var xPos=20;

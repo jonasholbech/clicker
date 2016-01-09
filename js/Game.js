@@ -42,6 +42,7 @@ Game.setupGame = function () {
         Game.spawn(4);
     }
 
+    Shop.init(Game.stage);
     Game.intervalSpawn   = setInterval(Game.spawn, 10000);
     Game.intervalMove    = setInterval(Game.move, 3000);//TODO, integreres i levels
     Game.intervalCollect = setInterval(Game.collect, 1000)
@@ -119,7 +120,7 @@ Game.calcCPS=function(){
     Game.cps[Game.currentScene]=sum;
     Texts.cpsValue.text=sum;
 }
-Game.addCreature = function (setup) {//applied on drop
+Game.addCreature = function (setup) {//applied on crate, shop, not on drop
     var setup=setup || {}
     setup.world = setup.world || Game.currentScene+1;
     setup.level = setup.level || 1;
@@ -192,6 +193,7 @@ Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsv
 
 
             Game.calcCPS();
+            Database.update(Game, Shop)
             break;
         }
 

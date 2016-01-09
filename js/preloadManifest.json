@@ -12,6 +12,7 @@
         {"id":"settings", "src":"js/settings.json"},
       {"id":"worldsSS", "src":"gfx/sprites/worlds.json"},
       "gfx/crate.png",
-      "gfx/worlds/w1.jpg"
+      "gfx/worlds/w1.jpg",
+      "gfx/shop.png"
     ]
 }

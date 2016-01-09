@@ -70,8 +70,8 @@ var Database = {
         for(i=0; i<Game.creatures.length; i++){
             a.push([])
             for(z=0; z<Game.creatures[i].length; z++){
-                //TODO, stopped in the middle, make Createjs json friendly and restore in Game
                 a[i].push({"world":i, "type":Game.creatures[i][z].creatureType});
+                //console.log(Game.creatures[i][z].creatureType)
             }
         }
 
