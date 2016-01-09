@@ -7,6 +7,8 @@ Game.crates = [];
 Game.creatures = [[], [], [], [], [], [], []];
 Game.cps=[0, 0, 0, 0, 0, 0, 0];
 Game.coins=[0, 0, 0, 0, 0, 0, 0];
+Game.creatureLevels=[8, 5, 6, 5, 6, 6, 4, 5];
+
 Game.unlocks = [0, 0, 0, 0, 0, 0, 0];
 
 Game.cleanUp = function () {
