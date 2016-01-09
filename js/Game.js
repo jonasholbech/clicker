@@ -11,12 +11,12 @@ Game.creatureLevels=[8, 5, 6, 5, 6, 6, 4, 5];
 
 Game.unlocks = [0, 0, 0, 0, 0, 0, 0];
 
-Game.cleanUp = function () {
+Game.cleanUp = function () {//TODO ever used? If so should it clean up arrays and use db as well?
     Game.stage.removeAllChildren();
 }
 
 Game.setupGame = function () {
-    console.groupEnd()
+    console.groupEnd();
     Game.cleanUp();
     Game.settings = Preload.queue.getResult('settings');
     Scenes.init();
@@ -163,8 +163,7 @@ Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsv
             creature.creatureType++;
             if(Sprites.creatures._animations.indexOf((Game.currentScene+1)+"_" + newType)>-1){
                 //this scene
-                //TODO virker ikke helt, ender med at kunne købe ting i verden før først creature i næste verden
-                if(Game.unlocks[Game.currentScene]+parseInt(Game.settings.unlockDiff) < newType){
+                if(Game.unlocks[Game.currentScene]+parseInt(Game.settings.unlockDiff)+1 < newType){
                     Game.unlocks[Game.currentScene]=newType;
                 }
                 creature.gotoAndStop((Game.currentScene+1)+"_" + newType);
