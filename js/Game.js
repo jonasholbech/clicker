@@ -4,20 +4,32 @@ Game.canvasDOM = document.querySelector("#canvas");
 Game.currentScene = 0;
 Game.intervalSpawn = null;
 Game.crates = [];
-Game.creatures = [[], [], [], [], [], [], []];
+Game.creatures = [[], [], [], [], [], [], [], []];
 Game.cps=[0, 0, 0, 0, 0, 0, 0];
 Game.coins=[0, 0, 0, 0, 0, 0, 0];
-Game.creatureLevels=[2, 5, 6, 5, 6, 6, 4, 5];//TODO, not used?
-Game.creatures = [[], [], [], [], [], [], []];
-Game.unlocks = [0, 0, 0, 0, 0, 0, 0];
+Game.creatureLevels=[2, 5, 6, 5, 6, 6, 4, 5];
+Game.creatures = [[], [], [], [], [], [], [], []];
+Game.unlocks = [0, 0, 0, 0, 0, 0, 0, 0];
+Game.income = [[], [], [], [], [], [], [], []];
 
-Game.cleanUp = function () {//TODO ever used? If so should it clean up arrays and use db as well?
+Game.cleanUp = function () {
     Game.stage.removeAllChildren();
 }
 
 Game.setupGame = function () {
+    var i, z, l;
     console.groupEnd();
+
     Game.cleanUp();
+    //setup income array
+    var base=0.5;
+    for(i=0; i<Game.creatureLevels.length;i++){
+        for(z=0; z<Game.creatureLevels[i]; z++){
+            Game.income[i].push(base);
+            base=(base*2)*1.1;
+        }
+    }
+
     Game.settings = Preload.queue.getResult('settings');
     Scenes.init();
     Sprites.init();
@@ -28,7 +40,7 @@ Game.setupGame = function () {
     Database.init();
     if(Database.load(Game, Shop)){
         //Reinstatiate objects
-        var i, z, l;
+
         //just spawn new creates: (even though x, y are available)
         l = Game.crates.length;
         Game.crates=[];
@@ -45,6 +57,8 @@ Game.setupGame = function () {
         Game.spawn(4);
     }
 
+
+    console.log(Game.income)
     Shop.init(Game.stage);
     Game.intervalSpawn   = setInterval(Game.spawn, 10000);
     Game.intervalMove    = setInterval(Game.move, 3000);//TODO, integreres i levels
@@ -92,8 +106,14 @@ Game.collect=function(){
     Texts.coinsValue.text=Game.coins[Game.currentScene];
 }
 Game.calcCPS=function(){
-    var sum=0;
-    Game.creatures[Game.currentScene].forEach(function(c) {
+    var sum= 0, i, z;
+    for(i=0; i<Game.creatures.length; i++){
+        for(z=0; z<Game.creatures[i].length; z++){
+            sum+=Game.income[i][Game.creatures[i][z].creatureType-1]
+            //console.log(Game.income[i][Game.creatures[i][z].creatureType-1])
+        }
+    }
+    /*Game.creatures[Game.currentScene].forEach(function(c) {
         switch(c.creatureType){
             case 1:
                 sum+=0.5;
@@ -119,9 +139,9 @@ Game.calcCPS=function(){
             case 8:
                 sum+=216;
         }
-    });
-    Game.cps[Game.currentScene]=sum;
-    Texts.cpsValue.text=sum;
+    });*/
+    Game.cps[Game.currentScene]=parseFloat(sum.toFixed(1));
+    Texts.cpsValue.text=parseFloat(sum.toFixed(1));
 }
 Game.addCreature = function (setup) {//applied on crate, shop, not on drop
     var setup=setup || {}
