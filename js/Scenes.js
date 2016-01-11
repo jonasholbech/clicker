@@ -14,7 +14,8 @@ var Scenes = {
     },
     setScene:function(index){
         //Game.stage.removeAllChildren()
-        var a = ["a", "b", "c"];
+        Game.currentScene=index;
+        //var a = ["a", "b", "c"];
         Scenes.list.forEach(function(entry) {
             Game.stage.removeChild(entry);
         });

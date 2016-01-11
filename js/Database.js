@@ -28,7 +28,7 @@ var Database = {
         return localStorage.getItem(key);
     },
     set:function(key, value){
-        if(!key || ! value){
+        if(!key ){
             throw new Error('You must pass key/value to set!');
         }
         localStorage.setItem(key, value)
@@ -55,11 +55,20 @@ var Database = {
         this.set('unlocks', this.escape(Game.unlocks))
         this.set('firstPlayed', Date.now());
         this.set('prices', this.escape(Shop.prices));
+        this.set('highestLevel',0);
     },
     clean:function(){
         this.delete('version');
     },
 
+    setHighestLevel:function(lvl){
+        console.log(lvl, parseInt(this.get('highestLevel')));
+        if(lvl>parseInt(this.get('highestLevel'))){
+            this.set('highestLevel', lvl);
+            return true;
+        }
+        return false;
+    },
     update:function(Game, Shop){
         var i, z, a=[];
         for(i=0; i<Game.crates.length; i++){
@@ -70,7 +79,7 @@ var Database = {
         for(i=0; i<Game.creatures.length; i++){
             a.push([])
             for(z=0; z<Game.creatures[i].length; z++){
-                a[i].push({"world":i, "type":Game.creatures[i][z].creatureType});
+                a[i].push({"world":i+1, "type":Game.creatures[i][z].creatureType});
                 //console.log(Game.creatures[i][z].creatureType)
             }
         }

@@ -7,8 +7,8 @@ Game.crates = [];
 Game.creatures = [[], [], [], [], [], [], []];
 Game.cps=[0, 0, 0, 0, 0, 0, 0];
 Game.coins=[0, 0, 0, 0, 0, 0, 0];
-Game.creatureLevels=[8, 5, 6, 5, 6, 6, 4, 5];
-
+Game.creatureLevels=[2, 5, 6, 5, 6, 6, 4, 5];//TODO, not used?
+Game.creatures = [[], [], [], [], [], [], []];
 Game.unlocks = [0, 0, 0, 0, 0, 0, 0];
 
 Game.cleanUp = function () {//TODO ever used? If so should it clean up arrays and use db as well?
@@ -35,6 +35,7 @@ Game.setupGame = function () {
         Game.spawn(l);
 
         //creatures
+        console.log(Game.creatureList)
         for(i=0; i<Game.creatureList.length; i++){
             for(z=0; z<Game.creatureList[i].length; z++){
                 Game.addCreature({world:Game.creatureList[i][z].world, level:Game.creatureList[i][z].type});
@@ -150,7 +151,7 @@ Game.addCreature = function (setup) {//applied on crate, shop, not on drop
     })
     Database.update(Game, Shop)
 }
-Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsvinder den ene ikke ved "new world"
+Game.creatureDropped = function (creature) {
 
     var i;
     for (i = Game.creatures[Game.currentScene].length-1; i >=0; i--) {
@@ -158,15 +159,22 @@ Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsv
             //the creatures don't match, or it's the same
             continue;
         }
-        //hvordan fanden handler jeg unlocks på tværs a flevels, de sidste to i hvert skal også kunne unlockes
+        //hvordan fanden handler jeg unlocks på tværs aflevels, de sidste to i hvert skal også kunne unlockes
         if (Utils.distance(creature, Game.creatures[Game.currentScene][i]) < Game.settings.mergeDistance) {
             var newType = creature.creatureType + 1;
             creature.creatureType++;
             if(Sprites.creatures._animations.indexOf((Game.currentScene+1)+"_" + newType)>-1){
                 //this scene
-                if(Game.unlocks[Game.currentScene]+parseInt(Game.settings.unlockDiff)+1 < newType){
-                    Game.unlocks[Game.currentScene]=newType;
+                var c= {};
+                c.world = Game.currentScene+1;
+                c.level =  newType;
+                /*
+                console.log("needing", Game.unlocks[Game.currentScene]+parseInt(Game.settings.unlockDiff)+1, "to unlock, got ", newType);
+                if(Game.unlocks[Game.currentScene]+parseInt(Game.settings.unlockDiff)+1 <= newType){
+                    console.log("unlocked a creature");
+                    Game.unlocks[Game.currentScene]++;
                 }
+                */
                 creature.gotoAndStop((Game.currentScene+1)+"_" + newType);
                 Scenes.list[Game.currentScene].removeChild(Game.creatures[Game.currentScene][i])
                 Game.creatures[Game.currentScene].splice(i, 1);
@@ -174,7 +182,7 @@ Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsv
             } else {
                 //add to next world
                 //ikke testst, TODO
-                var c= {}
+                var c= {};
                 c.world = Game.currentScene+2;
                 c.level =  1;
 
@@ -194,8 +202,30 @@ Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsv
 
             }
             //console.log("merge");
+            //merge happened, find "true level" og unlock
+            var i;
+            var tl=0;
+            for(i= c.world-2; i>=0; i--){
+                tl+=Game.creatureLevels[i];
+            }
+            tl+= c.level;
+            //unlocking
+            var togo=tl-parseInt(Game.settings.unlockDiff)+1;
+            if(Database.setHighestLevel(togo)){
 
 
+                for(i=0; i<tl-parseInt(Game.settings.unlockDiff)+1; i++){
+                    if(togo>=Game.creatureLevels[i]){
+                        Game.unlocks[i]=Game.creatureLevels[i];
+                        togo-=Game.creatureLevels[i];
+                    } else {
+                        Game.unlocks[i]=togo;
+                        togo=0;
+                    }
+                }
+                console.log(Game.unlocks)
+                console.log("tl", tl);
+            }
             Game.calcCPS();
             Database.update(Game, Shop)
             break;
