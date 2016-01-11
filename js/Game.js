@@ -158,6 +158,7 @@ Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsv
             //the creatures don't match, or it's the same
             continue;
         }
+        //hvordan fanden handler jeg unlocks på tværs a flevels, de sidste to i hvert skal også kunne unlockes
         if (Utils.distance(creature, Game.creatures[Game.currentScene][i]) < Game.settings.mergeDistance) {
             var newType = creature.creatureType + 1;
             creature.creatureType++;
@@ -172,10 +173,13 @@ Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsv
 
             } else {
                 //add to next world
-                creature.creatureType=1
+                //ikke testst, TODO
+                var c= {}
+                c.world = Game.currentScene+2;
+                c.level =  1;
+
                 console.log("going to the next world")
-                creature.gotoAndStop((Game.currentScene+2)+"_" + 1);
-                //Game.stage.removeChild(creature);
+
 
                 Scenes.list[Game.currentScene].removeChild(Game.creatures[Game.currentScene][i])
                 Game.creatures[Game.currentScene].splice(i, 1);
@@ -184,8 +188,7 @@ Game.creatureDropped = function (creature) {//TODO noget galt, nogen gange forsv
                 var index = Game.creatures[Game.currentScene].indexOf(creature);
                 Game.creatures[Game.currentScene].splice(index, 1);
 
-                Scenes.list[Game.currentScene+1].addChild(creature)
-                Game.creatures[Game.currentScene+1].push(creature)
+                Game.addCreature(c);
 
                 //noget med at hvis den DO der trækkes ind kommer bag ved den anden sker der noget og den ene fjernes ikke
 
