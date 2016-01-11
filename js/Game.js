@@ -5,9 +5,9 @@ Game.currentScene = 0;
 Game.intervalSpawn = null;
 Game.crates = [];
 Game.creatures = [[], [], [], [], [], [], [], []];
-Game.cps=[0, 0, 0, 0, 0, 0, 0];
-Game.coins=[0, 0, 0, 0, 0, 0, 0];
-Game.creatureLevels=[2, 5, 6, 5, 6, 6, 4, 5];
+Game.cps=0;
+Game.coins=0;
+Game.creatureLevels=[8, 5, 6, 5, 6, 6, 4, 5];
 Game.creatures = [[], [], [], [], [], [], [], []];
 Game.unlocks = [0, 0, 0, 0, 0, 0, 0, 0];
 Game.income = [[], [], [], [], [], [], [], []];
@@ -26,16 +26,20 @@ Game.setupGame = function () {
     for(i=0; i<Game.creatureLevels.length;i++){
         for(z=0; z<Game.creatureLevels[i]; z++){
             Game.income[i].push(base);
-            base=(base*2)*1.1;
+            base=(base*2)*1.2;
+            base = parseFloat(base.toFixed(1))
+
+
         }
     }
 
     Game.settings = Preload.queue.getResult('settings');
-    Scenes.init();
+
     Sprites.init();
+    Scenes.init();
     Texts.init();
     Scenes.setScene(Game.currentScene);
-    Texts.add(Scenes.list[Game.currentScene])
+    Texts.add(Scenes.container)
 
     Database.init();
     if(Database.load(Game, Shop)){
@@ -58,11 +62,12 @@ Game.setupGame = function () {
     }
 
 
-    console.log(Game.income)
+    //console.log(Game.income)
     Shop.init(Game.stage);
     Game.intervalSpawn   = setInterval(Game.spawn, 10000);
     Game.intervalMove    = setInterval(Game.move, 3000);//TODO, integreres i levels
     Game.intervalCollect = setInterval(Game.collect, 1000)
+
     Ticker.start();
 
 }
@@ -87,7 +92,7 @@ Game.spawn = function (num) {//only scene 0
             t.x = coords.x;
             t.y = coords.y;
             t.regX= t.regY=30;
-            Scenes.list[0].addChild(t)
+            Scenes.container.addChild(t)
             Game.crates.push(t);
             t.on('click', Game.unpackCrate);
             //console.log("Spawn");
@@ -98,12 +103,12 @@ Game.unpackCrate = function (e) {//only scene 0
     var i = Game.crates.indexOf(e.currentTarget)
     Game.crates.splice(i, 1);
     var coords = {x: e.currentTarget.x, y: e.currentTarget.y};
-    Scenes.list[0].removeChild(e.currentTarget)
+    Scenes.container.removeChild(e.currentTarget)
     Game.addCreature(coords);
 }
 Game.collect=function(){
-    Game.coins[Game.currentScene]+=Game.cps[Game.currentScene];
-    Texts.coinsValue.text=Game.coins[Game.currentScene];
+    Game.coins+=Game.cps;
+    Texts.coinsValue.text=Game.coins.toFixed(1);
 }
 Game.calcCPS=function(){
     var sum= 0, i, z;
@@ -113,35 +118,10 @@ Game.calcCPS=function(){
             //console.log(Game.income[i][Game.creatures[i][z].creatureType-1])
         }
     }
-    /*Game.creatures[Game.currentScene].forEach(function(c) {
-        switch(c.creatureType){
-            case 1:
-                sum+=0.5;
-                break;
-            case 2:
-                sum+=1.5;
-                break;
-            case 3:
-                sum+=4;
-                break;
-            case 4:
-                sum+=10;
-                break;
-            case 5:
-                sum+=23;
-                break;
-            case 6:
-                sum+=50;
-                break;
-            case 7:
-                sum+=105;
-                break;
-            case 8:
-                sum+=216;
-        }
-    });*/
-    Game.cps[Game.currentScene]=parseFloat(sum.toFixed(1));
-    Texts.cpsValue.text=parseFloat(sum.toFixed(1));
+
+    Game.cps=sum;
+    Texts.cpsValue.text=Game.cps;
+    console.log("income calculated to ", Game.cps)
 }
 Game.addCreature = function (setup) {//applied on crate, shop, not on drop
     var setup=setup || {}
@@ -156,7 +136,9 @@ Game.addCreature = function (setup) {//applied on crate, shop, not on drop
     t.y = setup.y;
     t.regX=t.regY=30
     t.beingDragged=false;
-    Scenes.list[setup.world-1].addChild(t)//only first scene
+    if(setup.world==Game.currentScene+1){
+        Scenes.container.addChild(t)
+    }
     Game.creatures[setup.world-1].push(t)
     Game.calcCPS();
     t.on("pressmove", function (evt) {
@@ -188,40 +170,25 @@ Game.creatureDropped = function (creature) {
                 var c= {};
                 c.world = Game.currentScene+1;
                 c.level =  newType;
-                /*
-                console.log("needing", Game.unlocks[Game.currentScene]+parseInt(Game.settings.unlockDiff)+1, "to unlock, got ", newType);
-                if(Game.unlocks[Game.currentScene]+parseInt(Game.settings.unlockDiff)+1 <= newType){
-                    console.log("unlocked a creature");
-                    Game.unlocks[Game.currentScene]++;
-                }
-                */
                 creature.gotoAndStop((Game.currentScene+1)+"_" + newType);
-                Scenes.list[Game.currentScene].removeChild(Game.creatures[Game.currentScene][i])
+                Scenes.container.removeChild(Game.creatures[Game.currentScene][i])
                 Game.creatures[Game.currentScene].splice(i, 1);
 
             } else {
                 //add to next world
-                //ikke testst, TODO
                 var c= {};
                 c.world = Game.currentScene+2;
                 c.level =  1;
-
                 console.log("going to the next world")
-
-
-                Scenes.list[Game.currentScene].removeChild(Game.creatures[Game.currentScene][i])
+                Scenes.container.removeChild(Game.creatures[Game.currentScene][i])
                 Game.creatures[Game.currentScene].splice(i, 1);
 
-                Scenes.list[Game.currentScene].removeChild(creature)
+                Scenes.container.removeChild(creature)
                 var index = Game.creatures[Game.currentScene].indexOf(creature);
                 Game.creatures[Game.currentScene].splice(index, 1);
-
                 Game.addCreature(c);
-
-                //noget med at hvis den DO der trækkes ind kommer bag ved den anden sker der noget og den ene fjernes ikke
-
             }
-            //console.log("merge");
+
             //merge happened, find "true level" og unlock
             var i;
             var tl=0;
@@ -232,8 +199,6 @@ Game.creatureDropped = function (creature) {
             //unlocking
             var togo=tl-parseInt(Game.settings.unlockDiff)+1;
             if(Database.setHighestLevel(togo)){
-
-
                 for(i=0; i<tl-parseInt(Game.settings.unlockDiff)+1; i++){
                     if(togo>=Game.creatureLevels[i]){
                         Game.unlocks[i]=Game.creatureLevels[i];
@@ -243,13 +208,10 @@ Game.creatureDropped = function (creature) {
                         togo=0;
                     }
                 }
-                console.log(Game.unlocks)
-                console.log("tl", tl);
             }
             Game.calcCPS();
             Database.update(Game, Shop)
             break;
         }
-
     }
 }
