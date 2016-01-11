@@ -32,33 +32,37 @@ var Shop = {
     open:function(){//shop er world specific, should it be global? (I guess yes)
         var i;
         var xPos=20;
+        Shop.state='open';
         var limit = Game.unlocks[Game.currentScene];
         Shop.container = new createjs.Container();
         for(i=0; i<limit; i++){
             var cont = new createjs.Container()
             var t = new createjs.Sprite(Sprites.creatures, (Game.currentScene+1)+"_"+(i+1));
-            var te = new createjs.Text(this.prices[Game.currentScene][i], '20px Verdana', '#FFF');
+            t.scaleX= t.scaleY=0.7;
+            var te = new createjs.Text(this.prices[Game.currentScene][i], '12px Verdana', '#FFF');
             //console.log(this.prices[Game.currentScene][i])
             te.y=50;
             cont.x=xPos;
             cont.addChild(t, te);
+
             cont.price=this.prices[Game.currentScene][i];
             cont.world = Game.currentScene+1;
             cont.creatureType=i+1;
-            if(Game.coins[Game.currentScene]>=cont.price){
+            if(Game.coins>=cont.price){
                 cont.on('click', Shop.buy, Shop);
 
             } else {
                 cont.alpha = 0.4;
             }
             Shop.container.addChild(cont);
-            xPos+=80;
+            xPos+=70;
         }
         Shop.container.y=Game.stage.canvas.height-80;
         Game.stage.addChild(Shop.container)
         //TODO figure out prices
     },
     buy:function(what){
+        Shop.state='closed';
         console.log(what, what.currentTarget.price, what.currentTarget.world, what.currentTarget.creatureType)
         var mod = 0;
         if(Game.currentScene==0){//global ship, first step
@@ -66,7 +70,7 @@ var Shop = {
         }
 
         if(mod + Game.creatures[Game.currentScene].length){
-            Game.coins[Game.currentScene]-=what.currentTarget.price;
+            Game.coins-=what.currentTarget.price;
             //update price
             Shop.prices[Game.currentScene][what.currentTarget.creatureType-1]=Math.floor(what.currentTarget.price*1.2);
             Game.addCreature({world:what.currentTarget.world, level:what.currentTarget.creatureType})

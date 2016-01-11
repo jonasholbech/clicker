@@ -37,9 +37,10 @@ Game.setupGame = function () {
 
     Sprites.init();
     Scenes.init();
+
     Texts.init();
-    Scenes.setScene(Game.currentScene);
-    Texts.add(Scenes.container)
+    //Scenes.setScene(Game.currentScene);
+    Texts.add(Game.stage)
 
     Database.init();
     if(Database.load(Game, Shop)){
@@ -64,6 +65,7 @@ Game.setupGame = function () {
 
     //console.log(Game.income)
     Shop.init(Game.stage);
+    Scenes.addArrows();
     Game.intervalSpawn   = setInterval(Game.spawn, 10000);
     Game.intervalMove    = setInterval(Game.move, 3000);//TODO, integreres i levels
     Game.intervalCollect = setInterval(Game.collect, 1000)
@@ -92,7 +94,9 @@ Game.spawn = function (num) {//only scene 0
             t.x = coords.x;
             t.y = coords.y;
             t.regX= t.regY=30;
-            Scenes.container.addChild(t)
+            if(Game.currentScene==0){
+                Scenes.container.addChild(t)
+            }
             Game.crates.push(t);
             t.on('click', Game.unpackCrate);
             //console.log("Spawn");
@@ -118,7 +122,7 @@ Game.calcCPS=function(){
             //console.log(Game.income[i][Game.creatures[i][z].creatureType-1])
         }
     }
-
+    sum = parseFloat(sum.toFixed(1))
     Game.cps=sum;
     Texts.cpsValue.text=Game.cps;
     console.log("income calculated to ", Game.cps)
