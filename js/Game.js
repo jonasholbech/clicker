@@ -112,7 +112,7 @@ Game.unpackCrate = function (e) {//only scene 0
 }
 Game.collect=function(){
     Game.coins+=Game.cps;
-    Texts.coinsValue.text=Game.coins.toFixed(1);
+    Texts.coinsValue.text=Utils.nFormatter(Game.coins,1);
 }
 Game.calcCPS=function(){
     var sum= 0, i, z;
@@ -124,7 +124,7 @@ Game.calcCPS=function(){
     }
     sum = parseFloat(sum.toFixed(1))
     Game.cps=sum;
-    Texts.cpsValue.text=Game.cps;
+    Texts.cpsValue.text=Utils.nFormatter(Game.cps);
     console.log("income calculated to ", Game.cps)
 }
 Game.addCreature = function (setup) {//applied on crate, shop, not on drop

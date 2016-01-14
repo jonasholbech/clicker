@@ -39,7 +39,7 @@ var Shop = {
             var cont = new createjs.Container()
             var t = new createjs.Sprite(Sprites.creatures, (Game.currentScene+1)+"_"+(i+1));
             t.scaleX= t.scaleY=0.7;
-            var te = new createjs.Text(this.prices[Game.currentScene][i], '12px Verdana', '#FFF');
+            var te = new createjs.Text(Utils.nFormatter(this.prices[Game.currentScene][i],1), '12px Verdana', '#FFF');
             //console.log(this.prices[Game.currentScene][i])
             te.y=50;
             cont.x=xPos;
@@ -62,14 +62,14 @@ var Shop = {
         //TODO figure out prices
     },
     buy:function(what){
-        Shop.state='closed';
+
         console.log(what, what.currentTarget.price, what.currentTarget.world, what.currentTarget.creatureType)
         var mod = 0;
         if(Game.currentScene==0){//global ship, first step
             mod=Game.crates.length;
         }
 
-        if(mod + Game.creatures[Game.currentScene].length){
+        if(mod + Game.creatures[Game.currentScene].length<16){
             Game.coins-=what.currentTarget.price;
             //update price
             Shop.prices[Game.currentScene][what.currentTarget.creatureType-1]=Math.floor(what.currentTarget.price*1.2);
@@ -80,7 +80,12 @@ var Shop = {
         }
     },
     close:function(){
+        Shop.state='closed';
+        try {
         Shop.container.removeAllChildren();
+        } catch(e){
+
+        }
         Game.stage.removeChild(Shop.container);
     }
 }
