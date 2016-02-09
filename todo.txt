@@ -4,6 +4,6 @@ separat økonoimi i hver? (gør det ekstremt svært at nå sidste verden, og gø
 
 Tror der skal sastes på samlet økonomi
 
-penege ender med at være med decimaler
+penge ender med at være med decimaler
 
 shop forscvinder når mans skifter verden to gange (removeallchildren?)
