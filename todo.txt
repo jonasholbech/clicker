@@ -10,4 +10,6 @@ shop forscvinder når mans skifter verden to gange (removeallchildren?)
 
 world srptites skal genereres, de skal jo være fullscreen
 
+når der afspilles fra "add to homescreen" virker touch.enable ikke, der kan dragges
+
 manifest virker vidst ikke

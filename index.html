@@ -26,26 +26,35 @@
             overflow:hidden;
         }
 
-
+        canvas {
+            background-color:red;
+        }
     </style>
     <script src="js/vendor/createjs-2015.11.26.min.js"></script>
 </head>
 <body>
 
-<canvas id="canvas" style="background-color:red" width="600" height="300"></canvas>
+<canvas id="canvas" width="600" height="300"></canvas>
+
+<script src="js/Preload.js"></script>
+<script src="js/G.js"></script>
 <script>
 
     window.onload = function(e) {
-        console.log("window loaded");
 
+        var statusBarSize = 0;//22;
+        var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - statusBarSize;
+        console.log("window loaded", w, h);
+        var canvas = document.querySelector('canvas');
+
+        canvas.width=w;
+        canvas.height=h;
         Game.init();
     };
 
 
 
 </script>
-<script src="js/Preload.js"></script>
-<script src="js/G.js"></script>
-
 </body>
 </html>
