@@ -5,11 +5,11 @@ var Scenes = {
     sprite:null,
     init:function(){
         this.container = new createjs.Container();
-        this.sprite = new createjs.Sprite(Sprites.worlds, "w_1")
+        this.sprite = new createjs.Sprite(Sprites.worlds, "w_1");
         this.container.addChild(this.sprite);
         Game.stage.addChild(this.container);
         this.left=new createjs.Bitmap(Preload.queue.getResult('gfx/list-arrow.png'));
-        this.right=new createjs.Bitmap(Preload.queue.getResult('gfx/list-arrow.png'))
+        this.right=new createjs.Bitmap(Preload.queue.getResult('gfx/list-arrow.png'));
 
         this.left.regX=this.right.regX=14;
         this.left.regY=this.right.regY=19;
@@ -21,18 +21,18 @@ var Scenes = {
     setScene:function(index){
         var i,z;
         Shop.close();//TODO shop kræver to klik's efter setScene
-        console.log("set scene",index, this.sprite)
+        console.log("set scene",index, this.sprite);
         Game.currentScene=index;
         this.sprite.gotoAndStop("w_"+(index+1));
         this.container.removeAllChildren();
         this.container.addChild(this.sprite)
         //repopulate
         for(i=0; i<Game.creatures[index].length; i++){
-            this.container.addChild(Game.creatures[index][i])
+            this.container.addChild(Game.creatures[index][i]);
         }
         if(index==0){
             for(i=0; i<Game.crates.length;i++){
-                this.container.addChild(Game.crates[i])
+                this.container.addChild(Game.crates[i]);
             }
         }
         this.addArrows();

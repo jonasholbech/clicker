@@ -104,10 +104,10 @@ Game.spawn = function (num) {//only scene 0
     }
 }
 Game.unpackCrate = function (e) {//only scene 0
-    var i = Game.crates.indexOf(e.currentTarget)
+    var i = Game.crates.indexOf(e.currentTarget);
     Game.crates.splice(i, 1);
     var coords = {x: e.currentTarget.x, y: e.currentTarget.y};
-    Scenes.container.removeChild(e.currentTarget)
+    Scenes.container.removeChild(e.currentTarget);
     Game.addCreature(coords);
 }
 Game.collect=function(){
@@ -118,7 +118,7 @@ Game.calcCPS=function(){
     var sum= 0, i, z;
     for(i=0; i<Game.creatures.length; i++){
         for(z=0; z<Game.creatures[i].length; z++){
-            sum+=Game.income[i][Game.creatures[i][z].creatureType-1]
+            sum+=Game.income[i][Game.creatures[i][z].creatureType-1];
             //console.log(Game.income[i][Game.creatures[i][z].creatureType-1])
         }
     }
@@ -128,7 +128,7 @@ Game.calcCPS=function(){
     console.log("income calculated to ", Game.cps)
 }
 Game.addCreature = function (setup) {//applied on crate, shop, not on drop
-    var setup=setup || {}
+    var setup=setup || {};
     setup.world = setup.world || Game.currentScene+1;
     setup.level = setup.level || 1;
     setup.x = setup.x || Utils.getRandomCoordinates(Game.settings.safeZone, Game.settings.safeZone).x;
@@ -138,12 +138,12 @@ Game.addCreature = function (setup) {//applied on crate, shop, not on drop
     t.creatureType = setup.level;
     t.x = setup.x;
     t.y = setup.y;
-    t.regX=t.regY=30
+    t.regX=t.regY=30;
     t.beingDragged=false;
     if(setup.world==Game.currentScene+1){
         Scenes.container.addChild(t)
     }
-    Game.creatures[setup.world-1].push(t)
+    Game.creatures[setup.world-1].push(t);
     Game.calcCPS();
     t.on("pressmove", function (evt) {
         evt.target.x = evt.stageX;
@@ -175,7 +175,7 @@ Game.creatureDropped = function (creature) {
                 c.world = Game.currentScene+1;
                 c.level =  newType;
                 creature.gotoAndStop((Game.currentScene+1)+"_" + newType);
-                Scenes.container.removeChild(Game.creatures[Game.currentScene][i])
+                Scenes.container.removeChild(Game.creatures[Game.currentScene][i]);
                 Game.creatures[Game.currentScene].splice(i, 1);
 
             } else {
@@ -184,7 +184,7 @@ Game.creatureDropped = function (creature) {
                 c.world = Game.currentScene+2;
                 c.level =  1;
                 console.log("going to the next world")
-                Scenes.container.removeChild(Game.creatures[Game.currentScene][i])
+                Scenes.container.removeChild(Game.creatures[Game.currentScene][i]);
                 Game.creatures[Game.currentScene].splice(i, 1);
 
                 Scenes.container.removeChild(creature)
@@ -214,8 +214,8 @@ Game.creatureDropped = function (creature) {
                 }
             }
             Game.calcCPS();
-            Database.update(Game, Shop)
+            Database.update(Game, Shop);
             break;
         }
     }
-}
+};

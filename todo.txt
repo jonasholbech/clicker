@@ -7,3 +7,6 @@ Tror der skal sastes på samlet økonomi
 penge ender med at være med decimaler?
 
 shop forscvinder når mans skifter verden to gange (removeallchildren?)
+
+
+manifest virker vidst ikke

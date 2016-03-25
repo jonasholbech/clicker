@@ -1,18 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <meta charset="UTF-8">
-    <title>Moo</title>
-    <script src="js/vendor/createjs-2015.11.26.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Box Clicker</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="description" content="">
+    <!-- Remember: changes to these often requires us to remove the bookmark (homescreen), close all relevant apps, find our app in the browser and "re-add" it to the home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <style>
-        canvas {
-            background:#ccc;
+        /*Basic rule*/
+        * {
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
         }
+        /*No scrolling*/
+        html, body {
+            overflow:hidden;
+        }
+
+
     </style>
+    <script src="js/vendor/createjs-2015.11.26.min.js"></script>
 </head>
 <body>
-    <canvas id="canvas" width="600" height="600"></canvas>
-    <script src="js/Preload.js"></script>
-    <script src="js/G.js"></script>
+
+<canvas id="canvas" style="background-color:red" width="600" height="300"></canvas>
+<script>
+    window.onload = function(e) {
+        console.log("window loaded");
+        var statusBarSize = 22;
+        var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - statusBarSize;
+        var canvas = document.querySelector('canvas');
+
+        canvas.width=w;
+        canvas.height=h;
+        w = canvas.offsetWidth;
+        h = canvas.offsetHeight;
+        Game.init();
+    };
+
+
+
+</script>
+<script src="js/Preload.js"></script>
+<script src="js/G.js"></script>
+
 </body>
 </html>
