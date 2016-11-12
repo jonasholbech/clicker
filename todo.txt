@@ -4,8 +4,9 @@ separat økonoimi i hver? (gør det ekstremt svært at nå sidste verden, og gø
 
 Tror der skal sastes på samlet økonomi
 
-penge ender med at være med decimaler?
+penge ender med at være med decimaler? fixet med round
 
+CPS skal være et komma tal
 shop forscvinder når mans skifter verden to gange (removeallchildren?)
 
 world srptites skal genereres, de skal jo være fullscreen
@@ -13,3 +14,14 @@ world srptites skal genereres, de skal jo være fullscreen
 når der afspilles fra "add to homescreen" virker touch.enable ikke, der kan dragges
 
 manifest virker vidst ikke
+
+shop skal refreshe sig selv ved flere penge event Fixed hackish if(Shop.state=='open'){
+                                                                        Shop.close();
+                                                                        Shop.open();
+                                                                    }
+
+Menu skal gøres pænere
+
+on resize, reposition
+
+Shop skal unlocke de sidste i en verden når en anden unlockes, måske er den der allerede?
