@@ -69,7 +69,7 @@ Game.setupGame = function () {
     Scenes.addArrows();
     Game.intervalSpawn   = setInterval(Game.spawn, 10000);
     Game.intervalMove    = setInterval(Game.move, 3000);//TODO, integreres i levels
-    Game.intervalCollect = setInterval(Game.collect, 1000)
+    Game.intervalCollect = setInterval(Game.collect, 1000);
 
     Ticker.start();
 
@@ -78,8 +78,8 @@ Game.move = function(){
     for(var i=0; i<Game.creatures[Game.currentScene].length; i++){
         var c = Game.creatures[Game.currentScene][i];
         if(!c.beingDragged){
-            var rX = Utils.getRandomInt(c.x-10, c.x+10)
-            var rY = Utils.getRandomInt(c.y-10, c.y+10)
+            var rX = Utils.getRandomInt(c.x-10, c.x+10);
+            var rY = Utils.getRandomInt(c.y-10, c.y+10);
             if(rX > Game.settings.safeZone && rX < Game.stage.canvas.width -Game.settings.safeZone && rY > Game.settings.safeZone && rY < Game.stage.canvas.width -Game.settings.safeZone){
                 createjs.Tween.get(Game.creatures[Game.currentScene][i]).to({x:rX, y:rY}, 500);
             }
@@ -187,7 +187,6 @@ Game.creatureDropped = function (creature) {
 
             } else {
                 //add to next world
-                Scenes.addArrows();
                 var c= {};
                 c.world = Game.currentScene+2;
                 c.level =  1;
@@ -199,6 +198,7 @@ Game.creatureDropped = function (creature) {
                 var index = Game.creatures[Game.currentScene].indexOf(creature);
                 Game.creatures[Game.currentScene].splice(index, 1);
                 Game.addCreature(c);
+                Scenes.addArrows();
             }
 
             //merge happened, find "true level" og unlock
