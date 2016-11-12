@@ -198,7 +198,7 @@ Game.creatureDropped = function (creature) {
                 var index = Game.creatures[Game.currentScene].indexOf(creature);
                 Game.creatures[Game.currentScene].splice(index, 1);
                 Game.addCreature(c);
-                Scenes.addArrows();
+
             }
 
             //merge happened, find "true level" og unlock
@@ -222,6 +222,7 @@ Game.creatureDropped = function (creature) {
                 }
             }
             Game.calcCPS();
+            Scenes.addArrows();
             Database.update(Game, Shop);
             break;
         }
