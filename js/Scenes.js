@@ -21,7 +21,7 @@ var Scenes = {
     setScene:function(index){
         var i,z;
         Shop.close();//TODO shop kræver to klik's efter setScene
-        console.log("set scene",index, this.sprite);
+        //console.log("set scene",index, this.sprite);
         Game.currentScene=index;
         this.sprite.gotoAndStop("w_"+(index+1));
         this.container.removeAllChildren();

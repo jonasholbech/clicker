@@ -65,6 +65,7 @@ Game.setupGame = function () {
 
     //console.log(Game.income)
     Shop.init(Game.stage);
+    Menu.init(Game.stage);
     Scenes.addArrows();
     Game.intervalSpawn   = setInterval(Game.spawn, 10000);
     Game.intervalMove    = setInterval(Game.move, 3000);//TODO, integreres i levels
@@ -112,7 +113,13 @@ Game.unpackCrate = function (e) {//only scene 0
 }
 Game.collect=function(){
     Game.coins+=Game.cps;
-    Texts.coinsValue.text=Utils.nFormatter(Game.coins,1);
+    //console.log(Game.cps, Game.coins);
+    Texts.coinsValue.text=Utils.nFormatter(Math.round(Game.coins),1);
+    //Texts.coinsValue.text=Game.coins;
+    if(Shop.state==='open'){
+        Shop.close();
+        Shop.open();
+    }
 }
 Game.calcCPS=function(){
     var sum= 0, i, z;
@@ -122,9 +129,9 @@ Game.calcCPS=function(){
             //console.log(Game.income[i][Game.creatures[i][z].creatureType-1])
         }
     }
-    sum = parseFloat(sum.toFixed(1))
+    sum = parseFloat(sum.toFixed(1));
     Game.cps=sum;
-    Texts.cpsValue.text=Utils.nFormatter(Game.cps);
+    Texts.cpsValue.text=Utils.nFormatter(Game.cps, 1);
     console.log("income calculated to ", Game.cps)
 }
 Game.addCreature = function (setup) {//applied on crate, shop, not on drop

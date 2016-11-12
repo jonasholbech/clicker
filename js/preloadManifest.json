@@ -8,12 +8,14 @@
       "js/Texts.js",
       "js/Shop.js",
       "js/Database.js",
+      "js/Menu.js",
         {"id": "creaturesSS", "src":"gfx/sprites/creatures.json"},
         {"id":"settings", "src":"js/settings.json"},
       {"id":"worldIconsSS", "src":"gfx/sprites/worldIcons.json"},
       {"id":"worldsSS", "src":"gfx/sprites/worlds.json"},
       "gfx/crate.png",
       "gfx/shop.png",
+      "gfx/menu.png",
       "gfx/list-arrow.png"
     ]
 }
