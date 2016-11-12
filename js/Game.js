@@ -187,6 +187,7 @@ Game.creatureDropped = function (creature) {
 
             } else {
                 //add to next world
+                Scenes.addArrows();
                 var c= {};
                 c.world = Game.currentScene+2;
                 c.level =  1;
