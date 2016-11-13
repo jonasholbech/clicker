@@ -25,7 +25,7 @@ var Scenes = {
         Game.currentScene=index;
         this.sprite.gotoAndStop("w_"+(index+1));
         this.container.removeAllChildren();
-        this.container.addChild(this.sprite)
+        this.container.addChild(this.sprite);
         //repopulate
         for(i=0; i<Game.creatures[index].length; i++){
             this.container.addChild(Game.creatures[index][i]);
@@ -38,20 +38,21 @@ var Scenes = {
         this.addArrows();
     },
     arrowClicked:function(evt, data){
-        this.setScene(data.index)
+        this.setScene(data.index);
     },
     addArrows:function(){
+        //.length fejler ved sidste bane/scene
         if(Game.unlocks[Game.currentScene+1]>0 || Game.creatures[Game.currentScene+1].length>0){//TODO duer ikke, du kan have creatures i næste verden uden de er unlocked, hack
             //right
-            this.container.addChild(this.right)
-            this.right.removeAllEventListeners()
+            this.container.addChild(this.right);
+            this.right.removeAllEventListeners();
             this.right.on('click', this.arrowClicked, this, true, {index:Game.currentScene+1});
         }
         if(Game.currentScene>0){
             //left
-            this.container.addChild(this.left)
-            this.left.removeAllEventListeners()
+            this.container.addChild(this.left);
+            this.left.removeAllEventListeners();
             this.left.on('click', this.arrowClicked, this, true, {index:Game.currentScene-1});
         }
     }
-}
+};

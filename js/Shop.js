@@ -17,7 +17,7 @@ var Shop = {
         this.button = new createjs.Bitmap(Preload.queue.getResult('gfx/shop.png'));//skal være sprite en dag
         this.button.x=parent.canvas.width-64;
         this.button.y=parent.canvas.height-64;
-        parent.addChild(this.button)
+        parent.addChild(this.button);
         this.button.on('click', Shop.toggleShop);
     },
     toggleShop:function(){
@@ -36,7 +36,7 @@ var Shop = {
         var limit = Game.unlocks[Game.currentScene];
         Shop.container = new createjs.Container();
         for(i=0; i<limit; i++){
-            var cont = new createjs.Container()
+            var cont = new createjs.Container();
             var t = new createjs.Sprite(Sprites.creatures, (Game.currentScene+1)+"_"+(i+1));
             t.scaleX= t.scaleY=0.7;
             var te = new createjs.Text(Utils.nFormatter(this.prices[Game.currentScene][i],1), '12px Verdana', '#FFF');
@@ -58,7 +58,7 @@ var Shop = {
             xPos+=70;
         }
         Shop.container.y=Game.stage.canvas.height-80;
-        Game.stage.addChild(Shop.container)
+        Game.stage.addChild(Shop.container);
         //TODO figure out prices
     },
     buy:function(what){
@@ -73,7 +73,7 @@ var Shop = {
             Game.coins-=what.currentTarget.price;
             //update price
             Shop.prices[Game.currentScene][what.currentTarget.creatureType-1]=Math.floor(what.currentTarget.price*1.2);
-            Game.addCreature({world:what.currentTarget.world, level:what.currentTarget.creatureType})
+            Game.addCreature({world:what.currentTarget.world, level:what.currentTarget.creatureType});
             //TODO, this is a hack
             Shop.close();
             Shop.open();
@@ -82,10 +82,10 @@ var Shop = {
     close:function(){
         Shop.state='closed';
         try {
-        Shop.container.removeAllChildren();
+            Shop.container.removeAllChildren();
         } catch(e){
 
         }
         Game.stage.removeChild(Shop.container);
     }
-}
+};

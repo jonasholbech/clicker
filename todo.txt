@@ -4,9 +4,7 @@ separat økonoimi i hver? (gør det ekstremt svært at nå sidste verden, og gø
 
 Tror der skal sastes på samlet økonomi
 
-penge ender med at være med decimaler? fixet med round
 
-CPS skal være et komma tal
 shop forscvinder når mans skifter verden to gange (removeallchildren?)
 
 world srptites skal genereres, de skal jo være fullscreen
@@ -25,3 +23,7 @@ Menu skal gøres pænere
 on resize, reposition
 
 Shop skal unlocke de sidste i en verden når en anden unlockes, måske er den der allerede?
+
+Når man køber og der spawner en kasse købes der ikke (klikket virker ikke agtigt)
+
+Større pile (eller evt bare en shape bag)

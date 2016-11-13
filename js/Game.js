@@ -132,8 +132,8 @@ Game.calcCPS=function(){
     sum = parseFloat(sum.toFixed(1));
     Game.cps=sum;
     Texts.cpsValue.text=Utils.nFormatter(Game.cps, 1);
-    console.log("income calculated to ", Game.cps)
-}
+    //console.log("income calculated to ", Game.cps)
+};
 Game.addCreature = function (setup) {//applied on crate, shop, not on drop
     var setup=setup || {};
     setup.world = setup.world || Game.currentScene+1;
@@ -161,9 +161,9 @@ Game.addCreature = function (setup) {//applied on crate, shop, not on drop
     t.on("pressup", function (evt) {
         evt.target.beingDragged=false;
         Game.creatureDropped(evt.target);
-    })
-    Database.update(Game, Shop)
-}
+    });
+    Database.update(Game, Shop);
+};
 Game.creatureDropped = function (creature) {
 
     var i;
@@ -190,11 +190,11 @@ Game.creatureDropped = function (creature) {
                 var c= {};
                 c.world = Game.currentScene+2;
                 c.level =  1;
-                console.log("going to the next world")
+                console.log("going to the next world");
                 Scenes.container.removeChild(Game.creatures[Game.currentScene][i]);
                 Game.creatures[Game.currentScene].splice(i, 1);
 
-                Scenes.container.removeChild(creature)
+                Scenes.container.removeChild(creature);
                 var index = Game.creatures[Game.currentScene].indexOf(creature);
                 Game.creatures[Game.currentScene].splice(index, 1);
                 Game.addCreature(c);

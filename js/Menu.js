@@ -21,7 +21,7 @@ var Menu = {
         var item1 = new createjs.Container();
         var square = new createjs.Shape();
         square.graphics.beginFill("#00F").drawRect(0,0,200,100);
-        var text = new createjs.Text("Clean DB", "30px Verdana");
+        var text = new createjs.Text("Reset Game", "30px Verdana");
         item1.addChild(square, text);
         item1.on('click', function(){
            Database.clean();

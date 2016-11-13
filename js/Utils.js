@@ -4,8 +4,7 @@ var Utils = {
     distance:function(o1, o2){
         var difx = o2.x - o1.x;
         var dify = o2.y - o1.y;
-        var t = Math.sqrt( (difx*difx) + (dify*dify) );
-        return t;
+        return Math.sqrt( (difx*difx) + (dify*dify) );
     },
     getRandomInt:function(min, max){
         if (min === undefined){
